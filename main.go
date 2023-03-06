@@ -127,7 +127,8 @@ func FCFSSchedule(w io.Writer, title string, processes []Process) {
 	outputSchedule(w, schedule, aveWait, aveTurnaround, aveThroughput)
 }
 
-func SJFPrioritySchedule(w io.Writer, title string, processes []Process) {
+// Sort processes by burst duration with the shortest burst first
+func SJFPrioritySchedule(w io.Writer, title string, processes []Process) { 
 	var (
 		serviceTime     int64
 		totalWait       float64
@@ -207,7 +208,7 @@ func SJFSchedule(w io.Writer, title string, processes []Process) {
 		}
 	}
 	for i := range processes {
-		if processes[i].ArrivalTime > 0 {
+		if processes[i].ArrivalTime >= 0 {
 			waitingTime = serviceTime - processes[i].ArrivalTime
 		}
 		totalWait += float64(waitingTime)
