@@ -147,7 +147,7 @@ func SJFPrioritySchedule(w io.Writer, title string, processes []Process) {
 		}
 	}
 	for i := range processes {
-		if processes[i].ArrivalTime > 0 {
+		if processes[i].ArrivalTime >= 0 {
 			waitingTime = serviceTime - processes[i].ArrivalTime
 		}
 		totalWait += float64(waitingTime)
