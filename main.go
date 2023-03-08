@@ -127,8 +127,8 @@ func FCFSSchedule(w io.Writer, title string, processes []Process) {
 	outputSchedule(w, schedule, aveWait, aveTurnaround, aveThroughput)
 }
 
-// Sort processes by burst duration with the shortest burst first
-func SJFPrioritySchedule(w io.Writer, title string, processes []Process) { 
+// Sort processes by burst duration with the shortest burst first incorporating preemption
+func SJFPrioritySchedule(w io.Writer, title string, processes []Process) {
 	var (
 		serviceTime     int64
 		totalWait       float64
@@ -251,16 +251,17 @@ func SJFSchedule(w io.Writer, title string, processes []Process) {
 
 func RRSchedule(w io.Writer, title string, processes []Process) {
 	var (
-		serviceTime int64
-		totalWait float64
+		serviceTime     int64
+		totalWait       float64
 		totalTurnaround float64
-		lastCompletion float64
-		schedule = make([][]string, len(processes))
-		gantt = make([]TimeSlice, 0)
-		timeQuantum = int64(2)
+		lastCompletion  float64
+		schedule        = make([][]string, len(processes))
+		gantt           = make([]TimeSlice, 0)
+		timeQuantum     = int64(2)
 	)
 	queue := make([]Process, 0)
 	i := 0
+	// Sort processes by arrival time with the earliest arrival first
 	for i < len(processes) || len(queue) > 0 {
 		if len(queue) == 0 {
 			if i < len(processes) && processes[i].ArrivalTime <= serviceTime {
@@ -311,9 +312,6 @@ func RRSchedule(w io.Writer, title string, processes []Process) {
 	outputGantt(w, gantt)
 	outputSchedule(w, schedule, aveWait, aveTurnaround, aveThroughput)
 }
-
-
-	
 
 //endregion
 
