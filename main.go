@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"math"
 	"os"
 	"strconv"
 	"strings"
@@ -148,7 +149,7 @@ func SJFPrioritySchedule(w io.Writer, title string, processes []Process) {
 	}
 	for i := range processes {
 		if processes[i].ArrivalTime >= 0 {
-			waitingTime = serviceTime - processes[i].ArrivalTime
+			waitingTime = int64(math.Max(float64(serviceTime)-float64(processes[i].ArrivalTime), 0))
 		}
 		totalWait += float64(waitingTime)
 
@@ -209,7 +210,7 @@ func SJFSchedule(w io.Writer, title string, processes []Process) {
 	}
 	for i := range processes {
 		if processes[i].ArrivalTime >= 0 {
-			waitingTime = serviceTime - processes[i].ArrivalTime
+			waitingTime = int64(math.Max(float64(serviceTime)-float64(processes[i].ArrivalTime), 0))
 		}
 		totalWait += float64(waitingTime)
 
